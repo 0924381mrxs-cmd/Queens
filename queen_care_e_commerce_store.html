@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوتيك كوين كير | Queen Care</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font: Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        sudan: {
+                            gold: '#D4AF37',
+                            darkGold: '#AA7C11',
+                            amber: '#C5832B',
+                            warmBrown: '#4A2E19',
+                            cream: '#FAF4EB',
+                            sand: '#F3E5D8',
+                            terracotta: '#8C3D2B'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #FAF4EB;
+            color: #332215;
+        }
+        
+        /* Custom Pattern Background inspired by Sudanese motifs */
+        .sudanese-pattern {
+            background-color: #4A2E19;
+            background-image: radial-gradient(#D4AF37 0.75px, transparent 0.75px), radial-gradient(#D4AF37 0.75px, #4A2E19 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0,15px 15px;
+            opacity: 0.95;
+        }
+        
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #FFE28A 0%, #D4AF37 50%, #996B00 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-btn {
+            background: linear-gradient(135deg, #D4AF37 0%, #AA7C11 100%);
+            transition: all 0.3s ease;
+        }
+        .gold-btn:hover {
+            background: linear-gradient(135deg, #C5832B 0%, #8C3D2B 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(170, 124, 17, 0.35);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F3E5D8;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #D4AF37;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #AA7C11;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between overflow-x-hidden">
+
+    <!-- Top Announcement Bar -->
+    <div class="bg-sudan-warmBrown text-sudan-cream text-xs sm:text-sm py-2 px-4 text-center border-b border-sudan-gold/30">
+        <div class="container mx-auto flex flex-wrap justify-between items-center gap-2">
+            <div class="flex items-center gap-2 mx-auto sm:mx-0">
+                <i class="fa-solid fa-location-dot text-sudan-gold"></i>
+                <span>عطبرة - خليوة (جوار صيدلية خليوه الحديثة)</span>
+            </div>
+            <div class="flex items-center gap-4 mx-auto sm:mx-0 font-sans">
+                <a href="tel:0116187888" class="hover:text-sudan-gold transition"><i class="fa-solid fa-phone text-sudan-gold ml-1"></i>0116187888</a>
+                <span class="text-sudan-gold/40">|</span>
+                <a href="tel:0123992441" class="hover:text-sudan-gold transition"><i class="fa-solid fa-phone text-sudan-gold ml-1"></i>0123992441</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md shadow-md border-b border-sudan-sand">
+        <div class="container mx-auto px-4 py-3 flex items-center justify-between gap-4">
+            
+            <!-- Brand Logo & Name -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-12 h-12 rounded-full bg-sudan-warmBrown border-2 border-sudan-gold flex items-center justify-center shadow-inner group-hover:rotate-6 transition duration-300">
+                    <i class="fa-solid fa-crown text-sudan-gold text-2xl"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black text-sudan-warmBrown tracking-wide">
+                        كوين كير <span class="text-sudan-gold text-lg font-light block sm:inline">Queen Care</span>
+                    </h1>
+                    <p class="text-[10px] text-gray-500 font-semibold tracking-wider">عطبرة - الفخامة والأناقة</p>
+                </div>
+            </a>
+
+            <!-- Search Bar (Desktop) -->
+            <div class="hidden md:flex flex-1 max-w-md mx-8 relative">
+                <input type="text" id="searchInput" oninput="filterProducts()" placeholder="ابحث عن عطر، مستحضر تجميل، أو إكسسوار..." 
+                       class="w-full pl-10 pr-4 py-2 text-sm rounded-full bg-sudan-cream border border-sudan-gold/40 focus:outline-none focus:border-sudan-darkGold transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-sudan-amber"></i>
+            </div>
+
+            <!-- Cart Trigger Button -->
+            <div class="flex items-center gap-3">
+                <button onclick="toggleCart()" class="relative p-2.5 rounded-full bg-sudan-cream text-sudan-warmBrown border border-sudan-gold/30 hover:bg-sudan-gold hover:text-white transition duration-300 shadow-sm">
+                    <i class="fa-solid fa-bag-shopping text-xl"></i>
+                    <span id="cartBadge" class="absolute -top-1 -right-1 bg-sudan-terracotta text-white text-xs font-bold w-5 h-5 rounded-full flex items-center justify-center hidden">0</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Search Bar (Mobile) -->
+        <div class="md:hidden px-4 pb-3">
+            <div class="relative">
+                <input type="text" id="mobileSearchInput" oninput="filterProductsMobile()" placeholder="ابحث عن منتج..." 
+                       class="w-full pl-10 pr-4 py-2 text-sm rounded-full bg-sudan-cream border border-sudan-gold/40 focus:outline-none focus:border-sudan-darkGold transition">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-sudan-amber"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner (Sudanese Modern Fusion) -->
+    <section class="relative sudanese-pattern text-white py-12 md:py-20 px-4 overflow-hidden border-b-4 border-sudan-gold">
+        <div class="absolute inset-0 bg-gradient-to-r from-sudan-warmBrown/90 via-sudan-warmBrown/80 to-transparent"></div>
+        
+        <div class="container mx-auto relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="max-w-xl text-center md:text-right">
+                <span class="inline-block px-4 py-1 rounded-full bg-sudan-gold/20 text-sudan-gold text-xs sm:text-sm font-semibold mb-4 border border-sudan-gold/40">
+                    ✨ أهلاً بكم في بوتيك كوين كير - عطبرة
+                </span>
+                <h2 class="text-3xl sm:text-5xl font-extrabold leading-tight mb-4">
+                    أناقتكِ الملموسة بلمسة <span class="gold-gradient-text">سودانية عصرية</span>
+                </h2>
+                <p class="text-sudan-sand text-sm sm:text-base leading-relaxed mb-6 font-light">
+                    تشكيلة فريدة تجمع بين أصالة العطور والدلكة السودانية، وأرقى مستحضرات التجميل العالمية والإكسسوارات العصرية لتكوني دائماً المليكة.
+                </p>
+                <div class="flex flex-wrap justify-center md:justify-start gap-4">
+                    <a href="#catalog" class="gold-btn text-white px-7 py-3 rounded-full font-bold shadow-lg flex items-center gap-2">
+                        <span>تسوقي الآن الكتالوج</span>
+                        <i class="fa-solid fa-arrow-left"></i>
+                    </a>
+                    <a href="https://wa.me/249116187888" target="_blank" class="bg-white/10 hover:bg-white/20 text-white border border-white/30 px-6 py-3 rounded-full font-semibold transition flex items-center gap-2">
+                        <i class="fa-brands fa-whatsapp text-green-400 text-lg"></i>
+                        <span>تواصل مباشر</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hero Decorative Badges/Card -->
+            <div class="relative w-full max-w-sm">
+                <div class="bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-sudan-gold/30 shadow-2xl text-center">
+                    <div class="w-20 h-20 mx-auto rounded-full bg-gradient-to-tr from-sudan-gold to-sudan-amber flex items-center justify-center mb-4 shadow-lg">
+                        <i class="fa-solid fa-wand-magic-sparkles text-3xl text-sudan-warmBrown"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-sudan-gold mb-1">عروض كوين كير الحصرية</h3>
+                    <p class="text-xs text-sudan-sand mb-4">تجهيزات كاملة للمناسبات، الأعراس، والعناية اليومية</p>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-sudan-warmBrown/60 p-2 rounded-lg border border-sudan-gold/20">
+                            <span class="block font-bold text-sudan-gold">100%</span> أصيل
+                        </div>
+                        <div class="bg-sudan-warmBrown/60 p-2 rounded-lg border border-sudan-gold/20">
+                            <span class="block font-bold text-sudan-gold">عطبرة</span> توصيل سريع
+                        </div>
+                        <div class="bg-sudan-warmBrown/60 p-2 rounded-lg border border-sudan-gold/20">
+                            <span class="block font-bold text-sudan-gold">جودة</span> عالية
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Catalog Section -->
+    <main id="catalog" class="container mx-auto px-4 py-12 flex-grow">
+        
+        <!-- Section Header & Filter Tabs -->
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-10">
+            <div>
+                <h3 class="text-2xl sm:text-3xl font-black text-sudan-warmBrown flex items-center gap-2">
+                    <i class="fa-solid fa-store text-sudan-gold"></i>
+                    كتالوج المنتجات
+                </h3>
+                <p class="text-gray-600 text-xs sm:text-sm mt-1">تصفحي أقسامنا المختارة بعناية واختاري ما يناسب جمالك</p>
+            </div>
+
+            <!-- Categories Buttons -->
+            <div class="flex flex-wrap items-center gap-2 bg-white p-1.5 rounded-2xl border border-sudan-sand shadow-sm">
+                <button onclick="filterCategory('all')" id="btn-all" class="cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-sudan-warmBrown text-sudan-gold">
+                    الكل
+                </button>
+                <button onclick="filterCategory('cosmetics')" id="btn-cosmetics" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-gray-600 hover:text-sudan-warmBrown hover:bg-sudan-cream">
+                    مستحضرات تجميل
+                </button>
+                <button onclick="filterCategory('perfumes')" id="btn-perfumes" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-gray-600 hover:text-sudan-warmBrown hover:bg-sudan-cream">
+                    عطور وبخور
+                </button>
+                <button onclick="filterCategory('accessories')" id="btn-accessories" class="cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-gray-600 hover:text-sudan-warmBrown hover:bg-sudan-cream">
+                    إكسسوارات
+                </button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic JavaScript Rendered Products -->
+        </div>
+
+        <!-- Empty State Message -->
+        <div id="emptyState" class="hidden text-center py-16">
+            <i class="fa-solid fa-box-open text-5xl text-sudan-amber/40 mb-3"></i>
+            <h4 class="text-lg font-bold text-gray-600">لم نجد أي منتجات تطابق بحثك!</h4>
+            <p class="text-xs text-gray-400 mt-1">جرب البحث بكلمة أخرى أو اختر قسماً آخر.</p>
+        </div>
+    </section>
+
+    <!-- Slide-over Cart Panel Drawer -->
+    <div id="cartModal" class="fixed inset-0 z-50 overflow-hidden hidden transition-all duration-300" aria-labelledby="slide-over-title" role="dialog" aria-modal="true">
+        <!-- Backdrop -->
+        <div onclick="toggleCart()" class="fixed inset-0 bg-sudan-warmBrown/60 backdrop-blur-sm transition-opacity"></div>
+
+        <div class="fixed inset-y-0 left-0 max-w-full flex pl-0 sm:pl-10">
+            <div class="w-screen max-w-md bg-white shadow-2xl flex flex-col justify-between">
+                
+                <!-- Cart Header -->
+                <div class="p-4 sm:p-6 bg-sudan-warmBrown text-white flex items-center justify-between border-b border-sudan-gold/30">
+                    <div class="flex items-center gap-3">
+                        <i class="fa-solid fa-bag-shopping text-sudan-gold text-xl"></i>
+                        <h3 class="text-lg font-bold">سلة التسوق</h3>
+                        <span id="cartHeaderCount" class="bg-sudan-gold text-sudan-warmBrown text-xs font-bold px-2.5 py-0.5 rounded-full">0 عناصر</span>
+                    </div>
+                    <button onclick="toggleCart()" class="text-gray-300 hover:text-white p-2 rounded-lg hover:bg-white/10 transition">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+                </div>
+
+                <!-- Cart Items List -->
+                <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-4 divide-y divide-gray-100">
+                    <!-- Items rendered dynamically via JS -->
+                </div>
+
+                <!-- Cart Footer & Checkout -->
+                <div class="p-4 sm:p-6 bg-sudan-cream border-t border-sudan-sand">
+                    <div class="space-y-2 mb-4">
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>المجموع الفرعي:</span>
+                            <span id="cartSubtotal" class="font-bold">0 SDG</span>
+                        </div>
+                        <div class="flex justify-between text-sm text-gray-600">
+                            <span>التوصيل:</span>
+                            <span class="text-xs text-sudan-amber">يحدد عند التواصل (عطبرة/الولايات)</span>
+                        </div>
+                        <div class="flex justify-between text-base sm:text-lg font-black text-sudan-warmBrown pt-2 border-t border-sudan-gold/20">
+                            <span>الإجمالي الكلي:</span>
+                            <span id="cartTotal" class="text-sudan-terracotta">0 SDG</span>
+                        </div>
+                    </div>
+
+                    <!-- Customer Phone Input For WhatsApp -->
+                    <div class="mb-4">
+                        <label class="block text-xs font-bold text-sudan-warmBrown mb-1">اختر رقم الواتساب للطلب عليه:</label>
+                        <select id="whatsappSelect" class="w-full text-xs p-2 rounded-lg border border-sudan-gold/40 bg-white focus:outline-none focus:border-sudan-darkGold">
+                            <option value="249116187888">0116187888 (الرقم الرئيسي)</option>
+                            <option value="249123992441">0123992441 (الرقم الإضافي)</option>
+                        </select>
+                    </div>
+
+                    <button onclick="sendOrderWhatsApp()" class="w-full gold-btn text-white py-3 px-4 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg">
+                        <i class="fa-brands fa-whatsapp text-xl text-green-300"></i>
+                        <span>إتمام الطلب عبر الواتساب</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification for Add to Cart -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-sudan-warmBrown text-sudan-gold border border-sudan-gold/40 px-5 py-3 rounded-2xl shadow-2xl flex items-center gap-3 transform translate-y-20 opacity-0 transition-all duration-300 z-50">
+        <i class="fa-solid fa-circle-check text-green-400 text-lg"></i>
+        <span id="toastMsg" class="text-sm font-semibold text-white">تمت إضافة المنتج للسلة بنجاح!</span>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-sudan-warmBrown text-sudan-sand pt-10 pb-6 border-t-4 border-sudan-gold">
+        <div class="container mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 text-center md:text-right">
+            
+            <!-- Store Info -->
+            <div>
+                <h4 class="text-lg font-bold text-sudan-gold mb-3 flex items-center justify-center md:justify-start gap-2">
+                    <i class="fa-solid fa-crown"></i> بوتيك كوين كير (Queen Care)
+                </h4>
+                <p class="text-xs leading-relaxed text-gray-300 mb-4">
+                    وجهتكِ الأولى في عطبرة لمستحضرات التجميل العالمية، العطور والدلكة السودانية الفاخرة، والإكسسوارات الأنيقة.
+                </p>
+            </div>
+
+            <!-- Address & Location -->
+            <div>
+                <h4 class="text-lg font-bold text-sudan-gold mb-3">موقعنا في عطبرة</h4>
+                <ul class="text-xs space-y-2 text-gray-300">
+                    <li><i class="fa-solid fa-location-dot text-sudan-gold ml-2"></i>عطبرة - منطقة خليوة</li>
+                    <li><i class="fa-solid fa-building-prescription text-sudan-gold ml-2"></i>جوار صيدلية خليوه الحديثة</li>
+                    <li><i class="fa-solid fa-clock text-sudan-gold ml-2"></i>مفتوح يومياً من 9:00 صباحاً - 10:00 مساءً</li>
+                </ul>
+            </div>
+
+            <!-- Contact Numbers -->
+            <div>
+                <h4 class="text-lg font-bold text-sudan-gold mb-3">تواصلوا معنا</h4>
+                <div class="space-y-2 text-xs font-sans">
+                    <a href="tel:0116187888" class="block bg-white/5 hover:bg-white/10 p-2 rounded-lg border border-white/10 transition">
+                        <i class="fa-solid fa-phone text-sudan-gold ml-2"></i>0116187888
+                    </a>
+                    <a href="tel:0123992441" class="block bg-white/5 hover:bg-white/10 p-2 rounded-lg border border-white/10 transition">
+                        <i class="fa-solid fa-phone text-sudan-gold ml-2"></i>0123992441
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="container mx-auto px-4 pt-4 border-t border-white/10 text-center text-xs text-gray-400">
+            جميع الحقوق محفوظة &copy; 2026 - بوتيك كوين كير (Queen Care) - عطبرة
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // Sample Product Catalog Data
+        const products = [
+            {
+                id: 1,
+                name: "مجموعة العطور السودانية المتميزة",
+                category: "perfumes",
+                price: 35000,
+                image: "https://images.unsplash.com/photo-1592945403244-b3fbafd7f539?auto=format&fit=crop&w=600&q=80",
+                desc: "خمرة وعطور سودانية راقية برائحة ثابته وفواحة تتناسب مع المناسبات."
+            },
+            {
+                id: 2,
+                name: "كريم سيروم البشرة والنضارة",
+                category: "cosmetics",
+                price: 18000,
+                image: "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?auto=format&fit=crop&w=600&q=80",
+                desc: "سيروم مخصص لترطيب البشرة وحمايتها من العوامل الجوية وإعطائها نضارة الملكات."
+            },
+            {
+                id: 3,
+                name: "طقم إكسسوار ملكي مذهب",
+                category: "accessories",
+                price: 25000,
+                image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?auto=format&fit=crop&w=600&q=80",
+                desc: "طقم أنيق يشمل عقد وأقراط بتصميم عصري ولمعان يدوم طويلاً."
+            },
+            {
+                id: 4,
+                name: "مبخرة سودانية مودرن فاخرة",
+                category: "perfumes",
+                price: 15000,
+                image: "https://images.unsplash.com/photo-1608571423902-eed4a5ad8108?auto=format&fit=crop&w=600&q=80",
+                desc: "مبخرة نحاسية منقوشة بتصاميم تراثية عصرية لإضافة لمسة جمالية للمنزل."
+            },
+            {
+                id: 5,
+                name: "مجموعة أحمر شفاه (Matte Lipsticks)",
+                category: "cosmetics",
+                price: 12000,
+                image: "https://images.unsplash.com/photo-1586495777744-4413f21062fa?auto=format&fit=crop&w=600&q=80",
+                desc: "تشكيلة من 5 ألوان مطفية ثابته ومريحة للشفاه."
+            },
+            {
+                id: 6,
+                name: "سوار نسائي أنيق مطلي بالذهب",
+                category: "accessories",
+                price: 9500,
+                image: "https://images.unsplash.com/photo-1611591475143-be232935f478?auto=format&fit=crop&w=600&q=80",
+                desc: "سوار بتصميم ناعم يناسب الإطلالات اليومية والمناسبات."
+            },
+            {
+                id: 7,
+                name: "خمرة الصندل السودانية الأصيلة",
+                category: "perfumes",
+                price: 28000,
+                image: "https://images.unsplash.com/photo-1547887537-6158d64c35b3?auto=format&fit=crop&w=600&q=80",
+                desc: "خمرة صندل ذات تركيز عالي ورائحة مميزة تدوم لأيام."
+            },
+            {
+                id: 8,
+                name: "لوحة ظلال العيون (Eyeshadow Palette)",
+                category: "cosmetics",
+                price: 16500,
+                image: "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?auto=format&fit=crop&w=600&q=80",
+                desc: "12 لوناً تتراوح بين الألوان الترابية واللامعة لتغطية جميع إطلالاتك."
+            }
+        ];
+
+        let cart = [];
+        let currentCategory = 'all';
+
+        // Initialize Store
+        window.onload = function() {
+            renderProducts(products);
+            updateCartUI();
+        };
+
+        // Render Product Cards
+        function renderProducts(items) {
+            const grid = document.getElementById('productsGrid');
+            const emptyState = document.getElementById('emptyState');
+            
+            grid.innerHTML = '';
+
+            if (items.length === 0) {
+                emptyState.classList.remove('hidden');
+                return;
+            } else {
+                emptyState.classList.add('hidden');
+            }
+
+            items.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "bg-white rounded-2xl overflow-hidden border border-sudan-sand shadow-sm hover:shadow-xl transition duration-300 flex flex-col justify-between group";
+                
+                card.innerHTML = `
+                    <div class="relative overflow-hidden h-52 bg-sudan-cream">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                        <span class="absolute top-3 right-3 bg-sudan-warmBrown/80 backdrop-blur-md text-sudan-gold text-[10px] font-bold px-2.5 py-1 rounded-full border border-sudan-gold/30">
+                            ${getCategoryName(product.category)}
+                        </span>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between">
+                        <div>
+                            <h4 class="font-bold text-sudan-warmBrown text-base mb-1 group-hover:text-sudan-darkGold transition">${product.name}</h4>
+                            <p class="text-xs text-gray-500 line-clamp-2 mb-3 leading-relaxed">${product.desc}</p>
+                        </div>
+                        <div>
+                            <div class="flex items-center justify-between my-3">
+                                <span class="text-xs text-gray-400 font-semibold">السعر:</span>
+                                <span class="text-base font-extrabold text-sudan-terracotta">${product.price.toLocaleString()} <span class="text-xs font-normal">SDG</span></span>
+                            </div>
+                            <button onclick="addToCart(${product.id})" class="w-full bg-sudan-cream hover:bg-sudan-warmBrown text-sudan-warmBrown hover:text-sudan-gold border border-sudan-gold/40 py-2.5 px-4 rounded-xl text-xs font-bold transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-cart-plus"></i>
+                                <span>إضافة إلى السلة</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // Category Filter Helper
+        function getCategoryName(cat) {
+            switch(cat) {
+                case 'cosmetics': return 'مستحضرات تجميل';
+                case 'perfumes': return 'عطور وبخور';
+                case 'accessories': return 'إكسسوارات';
+                default: return 'عام';
+            }
+        }
+
+        // Filter Products by Category
+        function filterCategory(cat) {
+            currentCategory = cat;
+            
+            // Update Active Buttons
+            document.querySelectorAll('.cat-btn').forEach(btn => {
+                btn.className = "cat-btn px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition text-gray-600 hover:text-sudan-warmBrown hover:bg-sudan-cream";
+            });
+            const activeBtn = document.getElementById(`btn-${cat}`);
+            if(activeBtn) {
+                activeBtn.className = "cat-btn active px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition bg-sudan-warmBrown text-sudan-gold";
+            }
+
+            applyFilters();
+        }
+
+        // Filter Products by Search
+        function filterProducts() {
+            applyFilters();
+        }
+
+        function filterProductsMobile() {
+            applyFilters(true);
+        }
+
+        function applyFilters(isMobile = false) {
+            const query = (isMobile 
+                ? document.getElementById('mobileSearchInput').value 
+                : document.getElementById('searchInput').value).toLowerCase().trim();
+
+            let filtered = products;
+
+            if (currentCategory !== 'all') {
+                filtered = filtered.filter(p => p.category === currentCategory);
+            }
+
+            if (query !== '') {
+                filtered = filtered.filter(p => 
+                    p.name.toLowerCase().includes(query) || 
+                    p.desc.toLowerCase().includes(query)
+                );
+            }
+
+            renderProducts(filtered);
+        }
+
+        // Cart Actions
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.qty += 1;
+            } else {
+                cart.push({ ...product, qty: 1 });
+            }
+
+            updateCartUI();
+            showToast(`تمت إضافة "${product.name}" إلى السلة`);
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+            }
+            updateCartUI();
+        }
+
+        function removeFromCart(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const cartItemsContainer = document.getElementById('cartItemsContainer');
+            const cartBadge = document.getElementById('cartBadge');
+            const cartHeaderCount = document.getElementById('cartHeaderCount');
+            const cartSubtotal = document.getElementById('cartSubtotal');
+            const cartTotal = document.getElementById('cartTotal');
+
+            const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+
+            // Badge Count
+            if (totalItems > 0) {
+                cartBadge.innerText = totalItems;
+                cartBadge.classList.remove('hidden');
+            } else {
+                cartBadge.classList.add('hidden');
+            }
+
+            cartHeaderCount.innerText = `${totalItems} منتجات`;
+            cartSubtotal.innerText = `${totalPrice.toLocaleString()} SDG`;
+            cartTotal.innerText = `${totalPrice.toLocaleString()} SDG`;
+
+            // Render Cart Items
+            cartItemsContainer.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center py-12 text-gray-400">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-2 text-sudan-amber/30"></i>
+                        <p class="text-sm font-semibold">سلة التسوق فارغة حالياً</p>
+                    </div>
+                `;
+                return;
+            }
+
+            cart.forEach(item => {
+                const div = document.createElement('div');
+                div.className = "pt-3 flex items-center gap-3";
+                div.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="w-14 h-14 object-cover rounded-xl border border-sudan-sand">
+                    <div class="flex-1">
+                        <h5 class="text-xs font-bold text-sudan-warmBrown line-clamp-1">${item.name}</h5>
+                        <span class="text-xs text-sudan-terracotta font-extrabold block mt-0.5">${(item.price * item.qty).toLocaleString()} SDG</span>
+                        
+                        <div class="flex items-center gap-2 mt-2">
+                            <button onclick="updateCartQty(${item.id}, -1)" class="w-6 h-6 rounded-md bg-sudan-cream text-sudan-warmBrown flex items-center justify-center text-xs font-bold border border-sudan-gold/30 hover:bg-sudan-gold hover:text-white">-</button>
+                            <span class="text-xs font-bold px-1">${item.qty}</span>
+                            <button onclick="updateCartQty(${item.id}, 1)" class="w-6 h-6 rounded-md bg-sudan-cream text-sudan-warmBrown flex items-center justify-center text-xs font-bold border border-sudan-gold/30 hover:bg-sudan-gold hover:text-white">+</button>
+                        </div>
+                    </div>
+                    <button onclick="removeFromCart(${item.id})" class="text-gray-400 hover:text-red-500 p-1 text-sm">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                `;
+                cartItemsContainer.appendChild(div);
+            });
+        }
+
+        // Toggle Cart Drawer
+        function toggleCart() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        // Show Notification Toast
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            
+            setTimeout(() => {
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        // Send Order via WhatsApp
+        function sendOrderWhatsApp() {
+            if (cart.length === 0) {
+                alert("سلة التسوق فارغة! الرجاء إضافة منتجات أولاً.");
+                return;
+            }
+
+            const phone = document.getElementById('whatsappSelect').value;
+            let message = `*طلب جديد من بوتيك كوين كير (Queen Care)* 👑\n\n`;
+            message += `📍 *الموقع:* عطبرة - خليوة\n`;
+            message += `---------------------------------\n`;
+            
+            cart.forEach((item, index) => {
+                message += `${index + 1}. *${item.name}*\n   الكمية: ${item.qty} | السعر: ${(item.price * item.qty).toLocaleString()} SDG\n`;
+            });
+
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            message += `---------------------------------\n`;
+            message += `💰 *الإجمالي الكلي:* ${totalPrice.toLocaleString()} SDG\n\n`;
+            message += `يرجى تأكيد إتاحة المنتجات والتوصيل!`;
+
+            const encodedMsg = encodeURIComponent(message);
+            window.open(`https://wa.me/${phone}?text=${encodedMsg}`, '_blank');
+        }
+    </script>
+</body>
+</html>
